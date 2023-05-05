@@ -112,6 +112,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           gravity: ToastGravity.BOTTOM,
                           timeInSecForIosWeb: 3
                       );
+                      setState(() {
+                        isLoading=false;
+                      });
                     });
                   }
                 },
