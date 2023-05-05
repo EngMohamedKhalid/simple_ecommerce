@@ -18,6 +18,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController nameController = TextEditingController(text: "mor_2314");
   TextEditingController passwordController = TextEditingController(text: "83r5^_");
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  bool isLoading =false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,9 +76,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 )
             ),
             SizedBox(height: 22.h,),
+            isLoading?
+            const Center(child:CircularProgressIndicator())
+                :
             CustomButton(
                 text: "LOGIN",
                 onPressed: (){
+                  setState(() {
+                    isLoading=true;
+                  });
                   if(formKey.currentState!.validate()){
                     ApiServices().signIn(
                         username: nameController.text, password: passwordController.text
@@ -91,6 +98,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             timeInSecForIosWeb: 3
                           ).then((value) {
                             GoRouter.of(context).pushReplacement("/home");
+                            setState(() {
+                              isLoading=false;
+                            });
                           });
                         CashHelper.saveData(key: "token", value: value.token);
                     }).catchError((error){
