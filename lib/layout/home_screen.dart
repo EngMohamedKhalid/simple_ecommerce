@@ -24,6 +24,17 @@ class _HomeScreenState extends State<HomeScreen> {
         centerTitle: true,
         elevation: 0.0,
         title: const Text("Home"),
+        actions: [
+          IconButton(
+            onPressed: () {
+             GoRouter.of(context).push("/added");
+            },
+            icon: Icon(
+              Icons.done_all,
+              size:25.sp
+            ),
+          )
+        ],
       ),
       body: ListView(
         physics: const BouncingScrollPhysics(),

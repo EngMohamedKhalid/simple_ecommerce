@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:simple_ecommerce/modules/added_products_module/added_products_screen.dart';
+import 'package:simple_ecommerce/modules/add_product_module/add_product_screen.dart';
 import 'package:simple_ecommerce/shared/components/custom_button.dart';
 import 'package:simple_ecommerce/shared/components/custom_text_field.dart';
 import 'package:simple_ecommerce/shared/constant.dart';
@@ -80,7 +80,9 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                   takePhoto(
                                       ImageSource.camera
                                   ).then((value){
-                                    Navigator.pop(context);
+                                    setState(() {
+                                      Navigator.pop(context);
+                                    });
                                   });
                                 },
                                 child: Text(
@@ -103,7 +105,9 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                                   takePhoto(
                                       ImageSource.gallery
                                   ).then((value){
-                                    Navigator.pop(context);
+                                    setState(() {
+                                      Navigator.pop(context);
+                                    });
                                   });
                                 },
                                 child: Text(
@@ -128,7 +132,10 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                 decoration: BoxDecoration(
                   color: Colors.blue.withOpacity(.2),
                   borderRadius: BorderRadius.circular(10),
-
+                    image: file==null?null:DecorationImage(
+                        image: FileImage(file!),
+                        fit: BoxFit.cover
+                    )
                 ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -206,11 +213,16 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                     category: categoryController.text,
                     price:priceController.text,
                   ).then((value) {
-                    addedList[widget.id!]=value;
+                    addedList.remove(value);
+                    title = value.title;
+                    desc = value.description;
+                    cat = value.category;
+                    price = value.price;
+                    image = value.image;
                     Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AddedProductScreen(
-                            file: File(value.image),
+                          builder: (context) => AddProductScreen(
+                            addProductModel: value,
                           ),
                         )
                     );

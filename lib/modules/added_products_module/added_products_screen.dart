@@ -17,11 +17,6 @@ class AddedProductScreen extends StatefulWidget {
 class _AddedProductScreenState extends State<AddedProductScreen> {
 
   @override
-  void initState() {
-
-    super.initState();
-  }
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -50,7 +45,7 @@ class _AddedProductScreenState extends State<AddedProductScreen> {
         itemBuilder: (context, index) {
           return CustomAddedItem(
             productModel: addedList[index],
-            image: widget.file,
+            image: imageFile,
             id: index,
           );
         },

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:simple_ecommerce/models/add_product_model.dart';
 import 'package:simple_ecommerce/modules/added_products_module/added_products_screen.dart';
 import 'package:simple_ecommerce/shared/components/custom_button.dart';
 import 'package:simple_ecommerce/shared/components/custom_text_field.dart';
@@ -9,7 +10,8 @@ import 'package:simple_ecommerce/shared/constant.dart';
 import 'package:simple_ecommerce/shared/network/remote/api_services.dart';
 
 class AddProductScreen extends StatefulWidget {
-  const AddProductScreen({Key? key, }) : super(key: key);
+  const AddProductScreen({Key? key, this.addProductModel, }) : super(key: key);
+  final AddProductModel ? addProductModel;
   @override
   State<AddProductScreen> createState() => _AddProductScreenState();
 }
@@ -22,6 +24,15 @@ class _AddProductScreenState extends State<AddProductScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
    File? file;
+   @override
+  void initState() {
+    nameController.text=title;
+    categoryController.text=cat;
+    priceController.text=price;
+    descriptionController.text=desc;
+    file=File(image);
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -79,7 +90,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                      takePhoto(
                                        ImageSource.camera
                                      ).then((value){
-                                       Navigator.pop(context);
+                                       setState(() {
+                                         Navigator.pop(context);
+                                       });
                                      });
                                     },
                                     child: Text(
@@ -102,7 +115,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                     takePhoto(
                                         ImageSource.gallery
                                     ).then((value){
-                                      Navigator.pop(context);
+                                      setState(() {
+                                        Navigator.pop(context);
+                                      });
                                     });
                                   },
                                   child: Text(
@@ -127,6 +142,10 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 decoration: BoxDecoration(
                   color: Colors.blue.withOpacity(.2),
                   borderRadius: BorderRadius.circular(10),
+                  image: file==null?null:DecorationImage(
+                      image: FileImage(file!),
+                    fit: BoxFit.cover
+                  )
 
                 ),
                 child: Column(
@@ -178,7 +197,8 @@ class _AddProductScreenState extends State<AddProductScreen> {
             ),
             CustomTextFormField(
                  keyType: TextInputType.number,
-                controller: priceController),
+                controller: priceController,
+            ),
             SizedBox(height: 12.h,),
             Text(
               "Description",
@@ -204,6 +224,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       category: categoryController.text,
                       price:priceController.text,
                     ).then((value) {
+                      imageFile = File(value.image);
                       addedList.add(value);
                       Navigator.of(context).push(
                           MaterialPageRoute(
