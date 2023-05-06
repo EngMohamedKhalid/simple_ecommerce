@@ -167,7 +167,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                 fontSize: 19.sp,
               ),
             ),
-            CustomTextFormField(controller: nameController),
+            CustomTextFormField(obscureText:false,controller: nameController),
             SizedBox(height: 12.h,),
             Text(
               "Categories",
@@ -176,7 +176,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                 fontSize: 19.sp,
               ),
             ),
-            CustomTextFormField(controller: categoryController),
+            CustomTextFormField(obscureText:false,controller: categoryController),
             Text(
               "Price",
               style: TextStyle(
@@ -185,6 +185,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
               ),
             ),
             CustomTextFormField(
+                obscureText:false,
                 keyType: TextInputType.number,
                 controller: priceController),
             SizedBox(height: 12.h,),
@@ -198,6 +199,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
             SizedBox(height: 12.h,),
             CustomTextFormField(
               controller: descriptionController,
+              obscureText:false,
               maxLines: 7,
             ),
             SizedBox(height: 30.h,),
@@ -214,11 +216,6 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                     price:priceController.text,
                   ).then((value) {
                     addedList.remove(value);
-                    title = value.title;
-                    desc = value.description;
-                    cat = value.category;
-                    price = value.price;
-                    image = value.image;
                     Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (context) => AddProductScreen(

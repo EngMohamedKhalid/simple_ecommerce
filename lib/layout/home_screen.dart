@@ -47,6 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: CustomTextFormField(
                   controller: searchController,
                   hintText: "Search Product",
+                  obscureText: false,
                   prefixIcon: const Icon(Icons.search),
                 ),
               ),

@@ -19,6 +19,7 @@ class _LoginScreenState extends State<LoginScreen> {
   TextEditingController passwordController = TextEditingController(text: "83r5^_");
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool isLoading =false;
+  bool isPassword =true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
             ),
             SizedBox(height: 8.h,),
-            CustomTextFormField(controller: nameController),
+            CustomTextFormField(obscureText:false,controller: nameController),
             SizedBox(height: 25.h,),
             Text(
               "Password",
@@ -67,10 +68,15 @@ class _LoginScreenState extends State<LoginScreen> {
             SizedBox(height: 8.h,),
             CustomTextFormField(
                 controller: passwordController,
+                obscureText:isPassword,
                 suffixIcon: IconButton(
-                  onPressed: (){},
-                  icon:const Icon(
-                    Icons.visibility,
+                  onPressed: (){
+                    setState(() {
+                      isPassword=!isPassword;
+                    });
+                  },
+                  icon: Icon(
+                    isPassword?Icons.visibility_off:Icons.visibility,
                     color: Colors.black54,
                   ),
                 )

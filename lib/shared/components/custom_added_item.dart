@@ -3,9 +3,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:simple_ecommerce/models/add_product_model.dart';
+import 'package:simple_ecommerce/modules/added_products_module/added_products_screen.dart';
 import 'package:simple_ecommerce/modules/update_product_module/update_product_screen.dart';
 import 'package:simple_ecommerce/shared/constant.dart';
 import 'package:simple_ecommerce/shared/network/remote/api_services.dart';
+
+import '../../modules/add_product_module/add_product_screen.dart';
 
 class CustomAddedItem extends StatefulWidget {
   const CustomAddedItem({Key? key, required this.productModel, this.image, required this.id}) : super(key: key);
@@ -70,8 +73,8 @@ class _CustomAddedItemState extends State<CustomAddedItem> {
                 onPressed: (){
                  Navigator.of(context).push(
                    MaterialPageRoute(
-                     builder: (context) => UpdateProductScreen(
-                       id: widget.id,
+                     builder: (context) => AddProductScreen(
+                       addProductModel: widget.productModel,
                      ),
                    )
                  );

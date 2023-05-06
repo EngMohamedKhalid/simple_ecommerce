@@ -24,13 +24,19 @@ class _AddProductScreenState extends State<AddProductScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final ImagePicker _picker = ImagePicker();
    File? file;
+   String?chosenValue;
+  List<String> categoriesList=[];
+
    @override
   void initState() {
-    nameController.text=title;
-    categoryController.text=cat;
-    priceController.text=price;
-    descriptionController.text=desc;
-    file=File(image);
+     ApiServices().getAllCategories().then((value){
+       for (var element in value) {
+         categoriesList.add(element);
+         print(categoriesList);
+       }});
+     setState(() {
+
+     });
     super.initState();
   }
   @override
@@ -178,7 +184,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 fontSize: 19.sp,
               ),
             ),
-            CustomTextFormField(controller: nameController),
+            CustomTextFormField(obscureText:false,controller: nameController),
             SizedBox(height: 12.h,),
             Text(
               "Categories",
@@ -187,7 +193,48 @@ class _AddProductScreenState extends State<AddProductScreen> {
                 fontSize: 19.sp,
               ),
             ),
-            CustomTextFormField(controller: categoryController),
+            Container(
+              padding:EdgeInsets.symmetric(vertical: 10.h,horizontal: 10.w),
+              decoration: BoxDecoration(
+                color: Colors.blue.withOpacity(.2),
+                borderRadius: BorderRadius.circular(8)
+              ),
+              child:  DropdownButton(
+                isExpanded: true,
+                hint: Text(
+                    "Categories",
+                    style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.black
+                    )
+                ),
+                value: chosenValue,
+                underline: const SizedBox(),
+                icon: Icon(
+                  Icons.keyboard_arrow_down,
+                  size: 35.sp,
+                ),
+                onChanged: (newValue) {
+                  setState(() {
+                    chosenValue = newValue;
+                    print(chosenValue);
+                  });
+                },
+                items: categoriesList.map((itemValue){
+                  return DropdownMenuItem(
+                    value: itemValue,
+                    child: Text(
+                      itemValue,
+                      style: TextStyle(
+                          fontSize: 16.sp,
+                          color: Colors.black
+                      ),
+                    ),
+                  );
+                }).toList(),
+
+              ),
+            ),
             Text(
               "Price",
               style: TextStyle(
@@ -197,6 +244,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             ),
             CustomTextFormField(
                  keyType: TextInputType.number,
+              obscureText:false,
                 controller: priceController,
             ),
             SizedBox(height: 12.h,),
@@ -210,6 +258,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
             SizedBox(height: 12.h,),
             CustomTextFormField(
                 controller: descriptionController,
+              obscureText:false,
               maxLines: 7,
             ),
             SizedBox(height: 30.h,),
@@ -221,7 +270,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                       title: nameController.text,
                       desc: descriptionController.text,
                       image: file!.path,
-                      category: categoryController.text,
+                      category: chosenValue!,
                       price:priceController.text,
                     ).then((value) {
                       imageFile = File(value.image);

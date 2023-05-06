@@ -11,7 +11,7 @@ abstract class AppRoutes{
       routes: [
         GoRoute(
           path: "/",
-          builder: (context, state) =>token==null?const LoginScreen():const HomeScreen(),
+          builder: (context, state) => token==null?const LoginScreen():const HomeScreen(),
         ),
         GoRoute(
           path: "/add",
